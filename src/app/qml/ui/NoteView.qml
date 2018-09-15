@@ -18,10 +18,10 @@
 
 import QtQuick 2.4
 import QtQuick.Layouts 1.1
+import QtWebEngine 1.5
 import Ubuntu.Components 1.3
 import Ubuntu.Components.ListItems 1.3
 import Ubuntu.Components.Popups 1.3
-import com.canonical.Oxide 1.5
 import Ubuntu.Content 1.0
 import Evernote 0.1
 import "../components"
@@ -52,7 +52,7 @@ Item {
 
     Rectangle {
         id: locationBar
-        y: noteTextArea.locationBarController.offset
+        anchors.top: parent top
         anchors.left: parent.left
         anchors.right: parent.right
         height: headerContent.height
@@ -74,13 +74,11 @@ Item {
         }
     }
 
-    WebView {
+    WebEngineView {
         id: noteTextArea
-        anchors.fill: parent
-        anchors.bottomMargin: buttonPanel.height
-
-        locationBarController {
-            height: locationBar.height
+        anchors {
+            top: locationBar.bottom; left: parent.left; right: parent.right
+            bottomMargin: buttonPanel.height
         }
 
         property string html: root.note ? note.htmlContent : ""
@@ -89,7 +87,6 @@ Item {
             loadHtml(html, "file:///")
         }
 
-        context: webContext
         preferences.standardFontFamily: 'Ubuntu'
         preferences.minimumFontSize: 14
 
@@ -99,6 +96,14 @@ Item {
                 noteTextArea.loadHtml(noteTextArea.html, "file:///")
             }
         }
+
+        /* TODO: port this to QtWebEngine
+        userScripts: [
+            WebEngineScript {
+                worldId: WebEngineScript.ApplicationWorld
+                sourceUrl: Qt.resolvedUrl("ui/reminders-scripts.js");
+            }
+        ]
 
         messageHandlers: [
             ScriptMessageHandler {
@@ -132,6 +137,7 @@ Item {
                 }
             }
         ]
+        */
     }
 
     Item {

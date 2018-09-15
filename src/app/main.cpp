@@ -29,6 +29,7 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include <QLoggingCategory>
+#include <qtwebengineglobal.h>
 
 QHash<QString, bool> s_loggingFilters;
 QLoggingCategory dcApplication("Application");
@@ -48,6 +49,9 @@ void loggingCategoryFilter(QLoggingCategory *category)
 int main(int argc, char *argv[])
 {
     QGuiApplication a(argc, argv);
+
+    QtWebEngine::initialize();
+
     QQuickView view;
     view.setResizeMode(QQuickView::SizeRootObjectToView);
 
